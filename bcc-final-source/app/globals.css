@@ -59,7 +59,7 @@
 * { box-sizing: border-box; }
 html { background: var(--ink); scroll-behavior: smooth; scroll-padding-top: 110px; -webkit-text-size-adjust: 100%; }
 /* Body stays transparent so the fixed backdrop shows between floating panels */
-body { margin: 0; background: transparent; color: var(--ink); overflow-x: hidden; overflow-x: clip; font-family: var(--font-sans); font-feature-settings: "ss01", "cv11"; text-rendering: optimizeLegibility; }
+body { margin: 0; background: transparent; color: var(--ink); overflow-x: hidden; overflow-x: clip; font-family: var(--font-sans); font-feature-settings: "ss01", "cv11"; text-rendering: optimizeLegibility; overflow-wrap: anywhere; }
 img { max-width: 100%; }
 ::selection { background: var(--teal); color: #fff; }
 :focus-visible { outline: 2px solid var(--teal-3); outline-offset: 3px; border-radius: 10px; }
@@ -179,6 +179,14 @@ html[data-intro-seen] .preloader { display: none; }
   .action { width: 100%; }
   .action.inline-w { width: auto; }
   .panel-dark, .panel-glass { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .float-panel { margin-inline: .5rem; border-radius: 20px; }
+  .panel-pad { padding-block: 3.25rem; padding-inline: 1rem; }
+  .display { font-size: clamp(2rem, 10vw, 3.2rem); }
+}
+
+@media (max-width: 379px) {
+  .action { min-height: 48px; padding-inline: 1rem; font-size: .82rem; }
+  .panel-pad { padding-inline: .85rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

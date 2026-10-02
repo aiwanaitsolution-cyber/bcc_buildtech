@@ -2,7 +2,7 @@
 import {Fragment, createContext, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {AnimatePresence, animate, motion, useInView, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue} from "motion/react";
 import {usePathname} from "next/navigation";
-import {ArrowRight, ArrowUp, ArrowUpRight, Building2, Check, ChevronDown, ChevronLeft, Download, Factory, HardHat, Link2, Mail, MapPin, Menu, Phone, Search, ShieldCheck, Users, X} from "lucide-react";
+import {ArrowRight, ArrowUp, ArrowUpRight, Bot, Building2, Check, ChevronDown, ChevronLeft, Download, Factory, HardHat, Link2, Mail, MapPin, Menu, MessageCircle, Mic, Phone, Search, Send, ShieldCheck, Users, X} from "lucide-react";
 import {IMG, brand, financials, leadership, machinery, navigation, pageMeta, projects, rating} from "@/app/data";
 
 const cx = (...s: (string | false | undefined | null)[]) => s.filter(Boolean).join(" ");
@@ -24,7 +24,7 @@ function Backdrop() {
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-ink">
       <motion.div style={{scale}} className="absolute inset-0 will-change-transform">
         <AnimatePresence initial={false}>
-          <motion.img key={src} src={src} alt="" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 1.2, ease: EASE}} className="img-premium absolute inset-0 h-full w-full object-cover" />
+          <motion.img key={src} src={src} alt="" loading="eager" decoding="async" initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} transition={{duration: 1.2, ease: EASE}} className="img-premium absolute inset-0 h-full w-full object-cover" />
         </AnimatePresence>
       </motion.div>
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,14,16,.2)_0%,rgba(8,14,16,.36)_50%,rgba(8,14,16,.72)_100%)]" />
@@ -503,6 +503,116 @@ function Footer() {
   );
 }
 
+type VoiceRecognition = {
+  lang: string;
+  interimResults: boolean;
+  maxAlternatives: number;
+  onresult: ((event: unknown) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+function answerAssistant(question: string) {
+  const q = question.toLowerCase();
+  if (q.includes("project")) return "You can explore BCC's completed and ongoing work on the Projects page.";
+  if (q.includes("epc") || q.includes("ham") || q.includes("business")) return "BCC delivers EPC, HAM and Bridges & Structures projects across roads and infrastructure.";
+  if (q.includes("contact") || q.includes("enquire") || q.includes("phone")) return "Use the Enquire page to send a project enquiry, or call the BCC team from the Connect section.";
+  if (q.includes("career") || q.includes("job")) return "Visit Careers to view opportunities and submit your resume.";
+  return "I can help with BCC projects, business capabilities, enquiries and careers. What would you like to explore?";
+}
+
+function FloatingAssist() {
+  const [chatOpen, setChatOpen] = useState(false);
+  const [messages, setMessages] = useState([{from: "bot", text: "Hello. How can I help you explore BCC Buildtech?"}]);
+  const [draft, setDraft] = useState("");
+  const [listening, setListening] = useState(false);
+  const [showTop, setShowTop] = useState(false);
+  const recognition = useRef<VoiceRecognition | null>(null);
+
+  useEffect(() => {
+    const onScroll = () => setShowTop(window.scrollY > window.innerHeight * 0.55);
+    onScroll();
+    window.addEventListener("scroll", onScroll, {passive: true});
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => () => recognition.current?.stop(), []);
+
+  const submit = (text = draft) => {
+    const clean = text.trim();
+    if (!clean) return;
+    const answer = answerAssistant(clean);
+    setMessages(current => [...current, {from: "user", text: clean}, {from: "bot", text: answer}]);
+    setDraft("");
+  };
+
+  const toggleVoice = () => {
+    if (listening) {
+      recognition.current?.stop();
+      setListening(false);
+      return;
+    }
+    const speechWindow = window as Window & {SpeechRecognition?: new () => VoiceRecognition; webkitSpeechRecognition?: new () => VoiceRecognition};
+    const Recognition = speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
+    if (!Recognition) {
+      setChatOpen(true);
+      setMessages(current => [...current, {from: "bot", text: "Voice input is not supported in this browser. You can still use the chat assistant here."}]);
+      return;
+    }
+    const instance = new Recognition();
+    instance.lang = "en-IN";
+    instance.interimResults = false;
+    instance.maxAlternatives = 1;
+    instance.onresult = event => {
+      const result = event as {results: ArrayLike<ArrayLike<{transcript?: string}>>};
+      let text = "";
+      for (let i = 0; i < result.results.length; i++) text += result.results[i]?.[0]?.transcript ?? "";
+      if (text.trim()) {
+        submit(text);
+        if ("speechSynthesis" in window) window.speechSynthesis.speak(new SpeechSynthesisUtterance(answerAssistant(text)));
+      }
+    };
+    instance.onerror = () => setListening(false);
+    instance.onend = () => setListening(false);
+    recognition.current = instance;
+    setChatOpen(true);
+    setListening(true);
+    instance.start();
+  };
+
+  return (
+    <>
+      <AnimatePresence>
+        {chatOpen && (
+          <motion.section initial={{opacity: 0, y: 18, scale: .96}} animate={{opacity: 1, y: 0, scale: 1}} exit={{opacity: 0, y: 18, scale: .96}} className="fixed bottom-22 right-3 z-70 flex w-[min(23rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-3xl border border-white/15 bg-ink/95 text-white shadow-[0_24px_70px_-24px_rgba(0,0,0,.7)] backdrop-blur-xl sm:bottom-24 sm:right-5">
+            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3.5">
+              <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-(image:--brand-grad)"><Bot className="h-4 w-4" /></span><div><p className="text-sm font-semibold">BCC assistant</p><p className="text-[11px] text-white/50">Quick answers about BCC</p></div></div>
+              <button type="button" onClick={() => setChatOpen(false)} aria-label="Close assistant" className="grid h-8 w-8 place-items-center rounded-full text-white/60 hover:bg-white/10 hover:text-white"><X className="h-4 w-4" /></button>
+            </div>
+            <div className="scrollbar-none flex max-h-65 flex-col gap-2 overflow-y-auto px-4 py-3" aria-live="polite">
+              {messages.map((message, i) => <p key={`${message.from}-${i}`} className={cx("max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-5", message.from === "user" ? "self-end bg-teal text-white" : "self-start bg-white/10 text-white/80")}>{message.text}</p>)}
+            </div>
+            <form onSubmit={event => {event.preventDefault(); submit();}} className="flex gap-2 border-t border-white/10 p-3">
+              <input value={draft} onChange={event => setDraft(event.target.value)} aria-label="Ask BCC assistant" placeholder="Ask about projects..." className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/8 px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/35 focus:border-teal-3" />
+              <button type="submit" aria-label="Send message" className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-teal text-white hover:bg-teal-2"><Send className="h-4 w-4" /></button>
+            </form>
+          </motion.section>
+        )}
+      </AnimatePresence>
+      <div className="fixed bottom-4 right-3 z-70 flex items-center gap-2 sm:bottom-5 sm:right-5">
+        <button type="button" onClick={() => setChatOpen(open => !open)} aria-label={chatOpen ? "Close chat assistant" : "Open chat assistant"} className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-ink/90 text-white shadow-[0_14px_35px_-12px_rgba(0,0,0,.8)] backdrop-blur-lg transition-transform hover:-translate-y-1"><MessageCircle className="h-5 w-5" /></button>
+        <button type="button" onClick={toggleVoice} aria-label={listening ? "Stop voice assistant" : "Start voice assistant"} className={cx("grid h-12 w-12 place-items-center rounded-full text-white shadow-[0_14px_35px_-12px_rgba(0,0,0,.8)] transition-transform hover:-translate-y-1", listening ? "bg-rose-600" : "bg-(image:--brand-grad)")}><Mic className="h-5 w-5" /></button>
+        {listening && <span className="sr-only" aria-live="assertive">Listening</span>}
+      </div>
+      <AnimatePresence>
+        {showTop && <motion.button initial={{opacity: 0, x: -12}} animate={{opacity: 1, x: 0}} exit={{opacity: 0, x: -12}} type="button" onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} aria-label="Back to top" className="fixed bottom-4 left-3 z-70 grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-ink/90 text-white shadow-[0_14px_35px_-12px_rgba(0,0,0,.8)] backdrop-blur-lg transition-transform hover:-translate-y-1 sm:bottom-5 sm:left-5"><ArrowUp className="h-5 w-5" /></motion.button>}
+      </AnimatePresence>
+    </>
+  );
+}
+
 export function Shell({children, backdrop}: {children: React.ReactNode; backdrop: BackdropConfig}) {
   const [active, setActive] = useState(0);
   const {scrollYProgress} = useScroll();
@@ -525,6 +635,7 @@ export function Shell({children, backdrop}: {children: React.ReactNode; backdrop
       <motion.div aria-hidden style={{scaleX, background: "var(--brand-grad)"}} className="fixed inset-x-0 top-0 z-80 h-0.75 origin-left" />
       <Backdrop />
       <Header />
+      <FloatingAssist />
       <div className="site-stack">
         {children}
         <Footer />
