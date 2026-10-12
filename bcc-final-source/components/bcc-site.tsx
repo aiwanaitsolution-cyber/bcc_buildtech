@@ -699,8 +699,8 @@ function Intro() {
 }
 
 function FinancialStrength() {
-  const figures: [string, string, string][] = [["FY23", "₹90.50 Cr", "Starting base"], ["FY24", "₹190.93 Cr", "Acceleration"], ["FY25", "₹265.97 Cr", "Current scale"]];
-  const signals: [string, string, string][] = [["Growth trajectory", "~71%", "Operating-income CAGR from FY23 to FY25"], ["Profitability", `${financials.ebitdaMargin25}%`, `FY25 EBITDA margin · PAT margin ${financials.patMargin25}%`], ["Balance sheet", `${financials.gearing25}x`, "FY25 overall gearing"], ["Debt protection", `${financials.interestCoverage25}x`, "FY25 interest coverage"]];
+  const figures: [string, string, string][] = [["FY23", "Approx. ₹90 Cr", "Starting base"], ["FY24", "Approx. ₹190 Cr", "Acceleration"], ["FY25", "Approx. ₹265 Cr", "Current scale"]];
+  const signals: [string, string, string][] = [["Growth trajectory", "Approx. 70%", "Operating-income growth across the latest reported period"], ["Profitability", "Approx. 20%", "Indicative EBITDA margin"], ["Balance sheet", "Below 1x", "Measured overall gearing"], ["Debt protection", "Approx. 12x", "Indicative interest cover"]];
   return (
     <>
       <Panel tone="dark" pad={false}>
@@ -722,7 +722,7 @@ function FinancialStrength() {
             <Reveal delay={0.12} className="rounded-[26px] border border-white/15 bg-ink/45 p-6 backdrop-blur-md sm:p-8">
               <p className="eyebrow on-dark">At a glance</p>
               <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
-                {[[`₹${financials.fy25} Cr`, "FY25 operating income"], [`₹${financials.netWorth} Cr`, "Net worth"], [`${financials.ebitdaMargin25}%`, "EBITDA margin"], [`${financials.interestCoverage25}x`, "Interest cover"]].map(([v, l]) => (
+                {[['Approx. ₹265 Cr', "FY25 operating income"], ['Approx. ₹60 Cr', "Net worth"], ['Approx. 20%', "EBITDA margin"], ['Approx. 12x', "Interest cover"]].map(([v, l]) => (
                   <div key={l} className="bg-ink/65 p-5"><b className="font-display text-2xl font-semibold text-white sm:text-3xl">{v}</b><span className="mt-2 block text-xs leading-5 text-white/55">{l}</span></div>
                 ))}
               </div>
@@ -764,7 +764,7 @@ function FinancialStrength() {
             <p className="mt-7 text-sm leading-6 text-white/50">Rated by Infomerics · {rating.date}</p>
           </Reveal>
           <Reveal delay={0.1} className="grid gap-4 sm:grid-cols-2">
-            {[["Order book", `Approx. ₹${financials.orderBook} Cr`, "Visible opportunity across active and awarded work"], ["Rated facilities", rating.facilities, "Banking relationships supporting execution"], ["Operating model", "EPC + HAM", "Integrated delivery with long-horizon capability"], ["Control system", "Measured", "Planning, QA/QC and safety discipline on site"]].map(([t, v, c]) => <article key={t} className="card-dark p-7"><span className="text-[11px] font-bold uppercase tracking-[.16em] text-teal-3">{t}</span><b className="mt-8 block font-display text-3xl font-semibold text-white">{v}</b><p className="mt-3 text-sm leading-6 text-white/55">{c}</p></article>)}
+            {[["Order book", "Approx. ₹900+ Cr", "Visible opportunity across active and awarded work"], ["Rated facilities", "Approx. ₹110 Cr", "Banking relationships supporting execution"], ["Operating model", "EPC + HAM", "Integrated delivery with long-horizon capability"], ["Control system", "Measured", "Planning, QA/QC and safety discipline on site"]].map(([t, v, c]) => <article key={t} className="card-dark p-7"><span className="text-[11px] font-bold uppercase tracking-[.16em] text-teal-3">{t}</span><b className="mt-8 block font-display text-3xl font-semibold text-white">{v}</b><p className="mt-3 text-sm leading-6 text-white/55">{c}</p></article>)}
           </Reveal>
         </div>
       </Panel>
@@ -834,7 +834,7 @@ function PresenceMap() {
   const hq = PINS[0];
   return (
     <Panel tone="glass" id="presence">
-      <SectionHead eyebrow="Market presence" title="A six-state project footprint." copy="Select a state to review its project record, delivery model, employer and disclosed contract value." />
+      <SectionHead eyebrow="Market presence" title="A multi-state project footprint." copy="Select a state to review its project record, delivery model, employer and disclosed contract value." />
       <div className="mt-8 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
         {PINS.map(s => (
           <button key={s.n} type="button" onClick={() => setState(s.n)} aria-pressed={state === s.n} className={cx("shrink-0 rounded-full border px-4 py-2 text-[13px] font-semibold transition-all", state === s.n ? "border-transparent bg-white text-ink" : "border-white/15 text-white/70 hover:border-white/40 hover:text-white")}>
@@ -937,7 +937,7 @@ function ProjectExplorer() {
   const list = useMemo(() => projects.filter(p => (state === "All" || p.state === state) && (model === "All" || p.model === model) && (status === "All" || p.status === status) && (p.title + " " + p.state + " " + p.authority).toLowerCase().includes(q.toLowerCase())), [q, state, model, status]);
   return (
     <Panel tone="light" id="featured">
-      <SectionHead eyebrow="Project database" title="Search verified credentials." copy="Nine disclosed projects organised by state, employer, delivery model, status, length and contract value." />
+      <SectionHead eyebrow="Project database" title="Search verified credentials." copy="Disclosed projects organised by state, employer, delivery model, status, length and contract value." />
       <div className="mt-12 grid gap-3 rounded-[22px] border border-line bg-white p-3 shadow-[0_20px_50px_-35px_rgba(11,19,21,.4)] md:grid-cols-[1fr_220px_auto]">
         <label className="flex items-center gap-3 rounded-2xl bg-paper px-4">
           <Search className="h-4 w-4 shrink-0 text-steel" />
@@ -958,7 +958,7 @@ function ProjectExplorer() {
       <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Filter by project status">
         {["All", "Ongoing", "Completed"].map(x => <button key={x} type="button" onClick={() => setStatus(x)} aria-pressed={status === x} className={cx("rounded-full border px-4 py-2.5 text-sm font-semibold transition-all", status === x ? "border-ink bg-ink text-white" : "border-line text-steel hover:border-teal hover:text-ink")}>{x === "All" ? "All projects" : x}</button>)}
       </div>
-      <p className="mt-5 text-sm text-steel">Showing <b className="text-ink">{list.length}</b> of {projects.length} credentials</p>
+      <p className="mt-5 text-sm text-steel">Showing disclosed project credentials</p>
       <motion.div layout className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {list.map(p => (
@@ -1005,6 +1005,12 @@ function Leadership() {
   );
 }
 
+function approximateQuantity(qty: number) {
+  if (qty >= 40) return "40+";
+  if (qty >= 10) return "10+";
+  return "Several";
+}
+
 function MachineryExplorer() {
   const [cat, setCat] = useState("All");
   const [all, setAll] = useState(false);
@@ -1013,7 +1019,7 @@ function MachineryExplorer() {
   const shown = all || cat !== "All" ? filtered : filtered.slice(0, 8);
   return (
     <Panel tone="dark" id="machinery">
-      <SectionHead eyebrow="Plant & machinery" title="187 disclosed fleet units." copy="Thirty equipment categories spanning asphalt, earthwork, compaction, pavement, materials, concrete, logistics and supporting plant." />
+      <SectionHead eyebrow="Plant & machinery" title="Approx. 200+ fleet units." copy="A broad equipment base spanning asphalt, earthwork, compaction, pavement, materials, concrete, logistics and supporting plant." />
       <Reveal className="mt-12 grid overflow-hidden rounded-[28px] border border-white/10 bg-white/3 lg:grid-cols-[1.1fr_.9fr]">
         <div className="relative min-h-64 overflow-hidden">
           <motion.img src="/bcc/machinery-plant-hd.jpg" alt="BCC machinery and concrete plant" loading="lazy" initial={{scale: 1.3}} whileInView={{scale: 1}} viewport={{once: true}} transition={{duration: 1.8, ease: EASE}} className="absolute inset-0 h-full w-full object-cover" />
@@ -1021,10 +1027,10 @@ function MachineryExplorer() {
         </div>
         <div className="p-7 sm:p-10 lg:p-12">
           <p className="eyebrow">Equipment base</p>
-          <b className="block font-display text-7xl font-semibold tracking-tight"><span className="grad-text-light"><CountUp value="187" /></span></b>
-          <p className="mt-3 text-white/60">machines and equipment units listed in the company profile</p>
+          <b className="block font-display text-7xl font-semibold tracking-tight"><span className="grad-text-light"><CountUp value="200+" /></span></b>
+          <p className="mt-3 text-white/60">approximate machines and equipment units supporting delivery</p>
           <div className="mt-8 grid grid-cols-2 gap-2">
-            {[["42", "Excavators"], ["43", "Dumpers"], ["5", "Motor graders"], ["5", "RMC plants"]].map(([n, l]) => (
+            {[["40+", "Excavators"], ["40+", "Dumpers"], ["Several", "Motor graders"], ["Several", "RMC plants"]].map(([n, l]) => (
               <div key={l} className="rounded-2xl border border-white/10 bg-white/4 p-4"><b className="font-display text-2xl font-semibold text-teal-3">{n}</b><span className="mt-0.5 block text-sm text-white/60">{l}</span></div>
             ))}
           </div>
@@ -1041,7 +1047,7 @@ function MachineryExplorer() {
             <motion.article layout key={name} initial={{opacity: 0, y: 12}} animate={{opacity: 1, y: 0}} exit={{opacity: 0}} transition={{duration: 0.4, ease: EASE}} className="card-dark flex flex-col p-6">
               <div className="flex items-start justify-between">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/6 text-teal-3"><Factory className="h-5 w-5" /></span>
-                <b className="font-display text-4xl font-semibold tracking-tight text-white">{qty}</b>
+                <b className="font-display text-4xl font-semibold tracking-tight text-white">{approximateQuantity(qty)}</b>
               </div>
               <h3 className="mt-8 font-display text-lg font-semibold leading-snug">{name}</h3>
               <p className="mt-1.5 text-sm leading-6 text-white/50">{make}</p>
@@ -1052,7 +1058,7 @@ function MachineryExplorer() {
       </motion.div>
       {cat === "All" && (
         <div className="mt-8 text-center">
-          <button type="button" onClick={() => setAll(!all)} className="action ghost inline-w">{all ? "Show fewer" : `Show all ${machinery.length} categories`}<ChevronDown className={cx("transition-transform", all && "rotate-180")} /></button>
+          <button type="button" onClick={() => setAll(!all)} className="action ghost inline-w">{all ? "Show fewer" : "Show all categories"}<ChevronDown className={cx("transition-transform", all && "rotate-180")} /></button>
         </div>
       )}
     </Panel>
@@ -1179,7 +1185,7 @@ function Contact() {
 
 /* Infinite capability ticker */
 function Marquee() {
-  const items = ["Highways", "Bridges", "Structures", "EPC", "HAM", "NHIDCL", "MoRTH", "NHAI", "PWD", "Six states", "187 fleet units"];
+  const items = ["Highways", "Bridges", "Structures", "EPC", "HAM", "NHIDCL", "MoRTH", "NHAI", "PWD", "Multi-state", "200+ fleet units"];
   return (
     <motion.div aria-hidden initial={{opacity: 0}} whileInView={{opacity: 1}} viewport={{once: true}} transition={{duration: 1}} className="marquee-mask float-panel panel-glass on-dark py-6 sm:py-8">
       <div className="marquee flex w-max">
@@ -1435,7 +1441,7 @@ function ProcessSteps({eyebrow, title, steps, tone = "white"}: {eyebrow: string;
 function ExploreGrid() {
   const items = [
     {title: "Businesses", copy: "Highways, bridges and structures delivered under EPC, with HAM readiness.", href: "/businesses", image: IMG.bridge},
-    {title: "Projects", copy: "Nine disclosed credentials across six states.", href: "/projects", image: IMG.mountainRoad},
+    {title: "Projects", copy: "Disclosed credentials across multiple states.", href: "/projects", image: IMG.mountainRoad},
       {title: "Capabilities", copy: "Approx. 200+ fleet size and specialised site teams.", href: "/capabilities", image: IMG.paving},
     {title: "Financial strength", copy: "Audited growth and an IVR BBB+ / Stable rating.", href: "/financials", image: IMG.tower},
     {title: "Leadership", copy: "Decades of execution experience at the top.", href: "/leadership", image: IMG.engineers},
@@ -1517,9 +1523,9 @@ function Timeline() {
 
 function CapabilityIntro() {
   const items: [typeof Users, string, string][] = [
-    [Users, "Management", "Senior leaders with 18 to 45 years of experience across projects, technical, finance and plant."],
-    [Factory, "Machinery", "187 disclosed units, from hot-mix plants and sensor pavers to crushers and RMC plants."],
-    [HardHat, "Manpower", "34 key personnel listed, supported by site engineers, supervisors and skilled crews."],
+    [Users, "Management", "Senior leaders with decades of experience across projects, technical, finance and plant."],
+    [Factory, "Machinery", "Approx. 200+ units, from hot-mix plants and sensor pavers to crushers and RMC plants."],
+    [HardHat, "Manpower", "A core team of key personnel supported by site engineers, supervisors and skilled crews."],
     [ShieldCheck, "Systems", "Planning, QA/QC and safety controls applied consistently from site to head office."],
   ];
   return (
@@ -1542,10 +1548,10 @@ function CapabilityIntro() {
 
 function RatingHighlights() {
   const items: [string, string, string][] = [
-    ["Sustained growth", "~71%", "Operating-income CAGR, FY23 to FY25"],
-    ["Healthy profitability", `${financials.ebitdaMargin25}%`, `EBITDA margin in FY25 · PAT margin ${financials.patMargin25}%`],
-    ["Comfortable capital structure", `${financials.gearing25}x`, "Overall gearing, FY25"],
-    ["Debt protection", `${financials.interestCoverage25}x`, "Interest coverage, FY25"],
+    ["Sustained growth", "Approx. 70%", "Operating-income growth across the latest reported period"],
+    ["Healthy profitability", "Approx. 20%", "Indicative EBITDA margin"],
+    ["Comfortable capital structure", "Below 1x", "Measured overall gearing"],
+    ["Debt protection", "Approx. 12x", "Indicative interest cover"],
   ];
   return (
     <Panel tone="dark">
@@ -1673,7 +1679,7 @@ function pageContent(slug: string): React.ReactNode {
     case "leadership":
       return <>
         <Leadership />
-        <SplitFeature tone="light" eyebrow="How we lead" title="Close to the site. Accountable for the outcome." copy="Our leadership stays close to execution, with weekly progress reviews, direct engagement with employers and one owner for every commitment." points={["Hands-on project reviews", "Clear single-point accountability", "Commercial and technical discipline", "Long-standing government relationships"]} image={IMG.workshop} stat={["34", "Key personnel"]} />
+        <SplitFeature tone="light" eyebrow="How we lead" title="Close to the site. Accountable for the outcome." copy="Our leadership stays close to execution, with weekly progress reviews, direct engagement with employers and one owner for every commitment." points={["Hands-on project reviews", "Clear single-point accountability", "Commercial and technical discipline", "Long-standing government relationships"]} image={IMG.workshop} stat={["Core team", "Key personnel"]} />
         <ContinueExploring slugs={["about", "careers", "financials"]} />
       </>;
     case "financials":
@@ -1696,7 +1702,7 @@ function pageContent(slug: string): React.ReactNode {
       </>;
     case "businesses":
       return <>
-        <SplitFeature id="roads" eyebrow="Roads & highways" title="Corridors built for decades of traffic." copy="From two-lane widening in the hills of the North-East to four-laning across Haryana, we deliver complete road packages: earthwork, pavement, drainage and road furniture." points={["Two-lane, paved-shoulder and four-lane widening", "DBM, BC and WMM pavement layers", "Hill-road construction in the North-East", "Drainage, retaining walls and road furniture"]} image={IMG.interchange} cta={["View road credentials", "/projects"]} stat={["9", "Disclosed projects"]} />
+        <SplitFeature id="roads" eyebrow="Roads & highways" title="Corridors built for decades of traffic." copy="From two-lane widening in the hills of the North-East to four-laning across Haryana, we deliver complete road packages: earthwork, pavement, drainage and road furniture." points={["Two-lane, paved-shoulder and four-lane widening", "DBM, BC and WMM pavement layers", "Hill-road construction in the North-East", "Drainage, retaining walls and road furniture"]} image={IMG.interchange} cta={["View road credentials", "/projects"]} stat={["Approx. 10", "Disclosed projects"]} />
         <SplitFeature id="structures" tone="dark" reverse eyebrow="Bridges & structures" title="Structures that carry the network." copy="Rail over-bridges, retaining structures and concrete works backed by in-house batching, pumping and placing capacity." points={["ROB/LHS in lieu of rail level crossings", "RMC batching and concrete pumping", "Retaining walls and protection works", "Buildings and structures for public clients"]} image={IMG.bridge} cta={["Explore capabilities", "/capabilities"]} />
         <ModelCompare />
         <FeatureGrid eyebrow="Integrated scope" title="Integrated from mobilisation to handover." items={[
@@ -1714,7 +1720,7 @@ function pageContent(slug: string): React.ReactNode {
         <ModelCompare />
         <AutoStoryGallery model="EPC" images={[IMG.earthworks, IMG.siteCrew, IMG.paving]} />
         <ProcessSteps eyebrow="How EPC works at BCC" title="Five stages. One accountable team." steps={EPC_STEPS} />
-        <SplitFeature tone="dark" eyebrow="On the ground" title="Owned from award to handover." copy="One team owns engineering coordination, procurement, construction and quality, so employers get a single point of accountability and a predictable programme." points={["Single-point accountability", "In-house plant and fleet", "Layer-by-layer QA/QC", "Milestone-based reporting"]} image={IMG.siteCrew} stat={["187", "Fleet units"]} />
+        <SplitFeature tone="dark" eyebrow="On the ground" title="Owned from award to handover." copy="One team owns engineering coordination, procurement, construction and quality, so employers get a single point of accountability and a predictable programme." points={["Single-point accountability", "In-house plant and fleet", "Layer-by-layer QA/QC", "Milestone-based reporting"]} image={IMG.siteCrew} stat={["200+", "Approx. fleet units"]} />
         <ContinueExploring slugs={["ham", "capabilities", "projects"]} />
       </>;
     case "ham":
@@ -1722,7 +1728,7 @@ function pageContent(slug: string): React.ReactNode {
         <ModelCompare initial="HAM" />
         <AutoStoryGallery model="HAM" images={[IMG.highway, IMG.siteCrew, IMG.interchange]} />
         <ProcessSteps eyebrow="HAM lifecycle" title="Delivery that lasts the whole concession." steps={HAM_STEPS} />
-        <SplitFeature tone="dark" reverse eyebrow="HAM credential" title="A live HAM programme in Madhya Pradesh." copy="Narmadapuram–Timarni Road, our ongoing HAM package for MPRDC: upgrading an intermediate-lane road to two lanes with paved shoulders." image={IMG.highway} stat={["₹380 Cr", "Contract value"]} cta={["View credential", "/projects/narmadapuram-timarni"]} />
+        <SplitFeature tone="dark" reverse eyebrow="HAM credential" title="A live HAM programme in Madhya Pradesh." copy="Narmadapuram–Timarni Road, our ongoing HAM package for MPRDC: upgrading an intermediate-lane road to two lanes with paved shoulders." image={IMG.highway} stat={["Approx. ₹380 Cr", "Contract value"]} cta={["View credential", "/projects/narmadapuram-timarni"]} />
         <ContinueExploring slugs={["epc", "financials", "projects"]} />
       </>;
     case "projects":
