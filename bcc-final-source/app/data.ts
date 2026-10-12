@@ -33,7 +33,7 @@ export const IMG={
   solar:U("1509391366360-2e959784a276"),wind:U("1466611653911-95081537e5b7"),forest:U("1497436072909-60f360e1d4b1"),
   hands:U("1531206715517-5c0ba140b2b8"),classroom:U("1509062522246-3755977927d7"),children:U("1488521787991-ed7bbaae773c"),
   team:U("1522071820081-009f0129c71c"),workshop:U("1552664730-d307ca884978"),welding:U("1558618666-fcd25c85cd64"),
-  sparks:U("1504917595217-d4dc5ebe6122"),plant:U("1513828583688-c52646db42da"),tower:U("1486406146926-c627a92ad1ab"),
+  sparks:U("1504917595217-d4dc5ebe6122"),plant:"/bcc/career-plant-machinery.png",tower:U("1486406146926-c627a92ad1ab"),
   paving:"/bcc/acc.jpg",highway:"/bcc/bcc.jpg",bridge:"/bcc/ccc.jpg",
 };
 export const pageMeta:Record<string,{eyebrow:string;title:string;copy:string;image:string}>={
