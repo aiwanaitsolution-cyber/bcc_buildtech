@@ -279,6 +279,20 @@ export function Header() {
   const activeGroup = navigation.find(n => n.href === pathname) ?? navigation.find(n => n.children.some(([, h]) => h.split("#")[0] === pathname));
   const isActive = (href: string) => activeGroup?.href === href;
   const current = navigation.find(n => n.label === mega);
+  const megaImages: Record<string, string> = {
+    "About BCC": IMG.siteCrew,
+    Leadership: IMG.team,
+    "Financial strength": IMG.tower,
+    Vision: IMG.interchange,
+    EPC: IMG.paving,
+    HAM: IMG.highway,
+    "Bridges & Structures": IMG.bridge,
+    "Quality & safety": IMG.hardHat,
+    CSR: IMG.children,
+    Sustainability: IMG.forest,
+    "Media centre / Blog": IMG.cranesDusk,
+  };
+  const megaImage = (label: string) => megaImages[label] ?? IMG.mountainRoad;
 
   return (
     <motion.header initial={{y: -110, opacity: 0}} animate={{y: 0, opacity: 1}} transition={{delay: introDelay + 0.2, duration: 1, ease: EASE}} className="fixed inset-x-0 top-0 z-50 px-2.5 pt-2.5 sm:px-4 sm:pt-3 lg:px-6" onMouseLeave={() => setMega("")} onKeyDown={e => {if (e.key === "Escape") {setMega(""); setOpen(false);}}}>
@@ -327,9 +341,11 @@ export function Header() {
                 </div>
                 <div className="grid gap-3" style={{gridTemplateColumns: `repeat(${current.children.length}, minmax(0,1fr))`}}>
                   {current.children.map(([l, h], i) => (
-                    <a key={h} href={h} className="group flex flex-col justify-between rounded-2xl border border-ink/8 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[0_18px_40px_-24px_rgba(11,19,21,.45)]">
-                      <span className="font-display text-xs font-semibold text-teal">0{i + 1}</span>
-                      <span className="mt-10 flex items-center justify-between gap-3 text-[15px] font-semibold text-ink">{l}<span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-mist transition-colors group-hover:bg-teal group-hover:text-white"><ArrowUpRight className="h-4 w-4" /></span></span>
+                    <a key={h} href={h} className="group relative isolate flex min-h-44 overflow-hidden rounded-2xl border border-ink/8 bg-ink p-5 text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[0_18px_40px_-24px_rgba(11,19,21,.45)]">
+                      <img src={megaImage(l)} alt="" loading="lazy" className="absolute inset-0 -z-20 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 -z-10 bg-linear-to-t from-ink via-ink/45 to-ink/10" />
+                      <span className="relative font-display text-xs font-semibold text-teal-3">0{i + 1}</span>
+                      <span className="relative mt-auto flex items-end justify-between gap-3 text-[15px] font-semibold">{l}<span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/85 text-ink transition-colors group-hover:bg-teal group-hover:text-white"><ArrowUpRight className="h-4 w-4" /></span></span>
                     </a>
                   ))}
                 </div>
