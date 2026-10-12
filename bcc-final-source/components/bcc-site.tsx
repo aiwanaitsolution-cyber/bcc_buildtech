@@ -2,7 +2,7 @@
 import {Fragment, createContext, useContext, useEffect, useMemo, useRef, useState} from "react";
 import {AnimatePresence, animate, motion, useInView, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue} from "motion/react";
 import {usePathname} from "next/navigation";
-import {ArrowRight, ArrowUp, ArrowUpRight, Bot, Building2, Check, ChevronDown, ChevronLeft, Download, Factory, HardHat, Link2, Mail, MapPin, Menu, MessageCircle, Mic, Phone, Search, Send, ShieldCheck, Users, X} from "lucide-react";
+import {ArrowRight, ArrowUp, ArrowUpRight, Building2, Check, ChevronDown, ChevronLeft, Download, Factory, HardHat, Link2, Mail, MapPin, Menu, Mic, Phone, Search, Send, ShieldCheck, Users, X} from "lucide-react";
 import {IMG, brand, financials, leadership, machinery, navigation, pageMeta, projects, rating} from "@/app/data";
 
 const cx = (...s: (string | false | undefined | null)[]) => s.filter(Boolean).join(" ");
@@ -530,18 +530,95 @@ type VoiceRecognition = {
   stop: () => void;
 };
 
+type ChatMessage = {from: "bot" | "user"; text: string};
+
 function answerAssistant(question: string) {
-  const q = question.toLowerCase();
-  if (q.includes("project")) return "You can explore BCC's completed and ongoing work on the Projects page.";
-  if (q.includes("epc") || q.includes("ham") || q.includes("business")) return "BCC delivers EPC, HAM and Bridges & Structures projects across roads and infrastructure.";
-  if (q.includes("contact") || q.includes("enquire") || q.includes("phone")) return "Use the Enquire page to send a project enquiry, or call the BCC team from the Connect section.";
-  if (q.includes("career") || q.includes("job")) return "Visit Careers to view opportunities and submit your resume.";
-  return "I can help with BCC projects, business capabilities, enquiries and careers. What would you like to explore?";
+  const raw = question.trim();
+  const q = raw.toLowerCase();
+  const hindi = /[\u0900-\u097f]/.test(raw) || /\b(kya|kaise|kahan|kitne|chahiye|batao|btao|hai|hain|ke|ki|ka|mein|me|aur|liye|karna|krna|do|dikhao|mil|sakte|sakti)\b/i.test(q);
+  const hinglish = /\b(ka|ki|ke|kya|kahan|kaise|batao|btao|chahiye|hai|hain|mein|me|aur|liye|karna|krna|dikhao|mil)\b/i.test(q);
+  const reply = (en: string, hi: string, mix?: string) => hindi ? (hinglish && mix ? mix : hi) : en;
+
+  if (/^(hi|hello|hey|namaste|नमस्ते|हेलो)/i.test(q)) return reply(
+    "Hello! I can help you explore BCC projects, EPC, HAM, leadership, financial strength, careers, impact and enquiries.",
+    "नमस्ते! मैं BCC के projects, EPC, HAM, leadership, financial strength, careers, impact और enquiry में मदद कर सकता हूँ।",
+    "Hello! Main BCC ke projects, EPC, HAM, leadership, financial strength, careers, impact aur enquiry ke baare mein help kar sakta hoon."
+  );
+  if (/project|projects|credential|काम|परियोजना|project list|ongoing|completed/i.test(q)) return reply(
+    "Open Projects to browse BCC's disclosed EPC and HAM credentials, filter by state, delivery model and status, and open each project for details.",
+    "Projects page पर BCC के disclosed EPC और HAM credentials देखें। आप state, delivery model और status के हिसाब से filter कर सकते हैं और हर project की details खोल सकते हैं।",
+    "Projects page par BCC ke disclosed EPC aur HAM credentials dekhiye. State, model aur status se filter karke individual project details khol sakte hain."
+  );
+  if (/epc|engineering procurement|construction model/i.test(q)) return reply(
+    "EPC means Engineering, Procurement and Construction. BCC manages coordination, procurement, construction, QA/QC and handover through one accountable delivery team.",
+    "EPC का अर्थ Engineering, Procurement and Construction है। BCC एक accountable team के माध्यम से coordination, procurement, construction, QA/QC और handover संभालता है।",
+    "EPC ka matlab Engineering, Procurement and Construction hai. BCC ek accountable team se coordination, procurement, construction, QA/QC aur handover manage karta hai."
+  );
+  if (/ham|hybrid annuity|annuity/i.test(q)) return reply(
+    "BCC evaluates and delivers HAM opportunities with long-term asset performance, contractual governance and maintenance readiness in mind.",
+    "BCC HAM opportunities को long-term asset performance, contractual governance और maintenance readiness के साथ evaluate और deliver करता है।",
+    "BCC HAM opportunities ko long-term asset performance, contractual governance aur maintenance readiness ke saath evaluate aur deliver karta hai."
+  );
+  if (/bridge|structure|rob|lhs/i.test(q)) return reply(
+    "BCC's Bridges & Structures capability covers ROB/LHS packages, retaining structures, concrete works, batching, pumping and placing.",
+    "BCC की Bridges & Structures capability में ROB/LHS packages, retaining structures, concrete works, batching, pumping और placing शामिल हैं।",
+    "BCC ki Bridges & Structures capability mein ROB/LHS packages, retaining structures, concrete works, batching, pumping aur placing shamil hain."
+  );
+  if (/nhai|nhidcl|morth|pwd|public sector|government|agency/i.test(q)) return reply(
+    "BCC's execution discipline is aligned with public-sector infrastructure expectations, including NHAI, NHIDCL, MoRTH and PWD environments.",
+    "BCC की execution discipline NHAI, NHIDCL, MoRTH और PWD जैसे public-sector infrastructure environments की अपेक्षाओं के अनुरूप है।",
+    "BCC ki execution discipline NHAI, NHIDCL, MoRTH aur PWD jaise public-sector infrastructure environments ki expectations ke aligned hai."
+  );
+  if (/machinery|fleet|equipment|plant|capabilit|capacity/i.test(q)) return reply(
+    "BCC has an approximate 200+ fleet and equipment base covering earthwork, asphalt, compaction, pavement, concrete, logistics and supporting plant.",
+    "BCC के पास approximate 200+ fleet और equipment base है, जिसमें earthwork, asphalt, compaction, pavement, concrete, logistics और supporting plant शामिल हैं।",
+    "BCC ke paas approximate 200+ fleet aur equipment base hai—earthwork, asphalt, compaction, pavement, concrete, logistics aur supporting plant ke liye."
+  );
+  if (/leadership|leader|director|management|bhoop|dheeraj|vijay|ashok/i.test(q)) return reply(
+    "BCC's leadership team includes Managing Director Mr. Bhoop Singh, Executive Director Mr. Dheeraj Singh, CFO Vijay Kumar Sharma and Director Technical Mr. Ashok Kumar Lamba.",
+    "BCC की leadership team में Managing Director Mr. Bhoop Singh, Executive Director Mr. Dheeraj Singh, CFO Vijay Kumar Sharma और Director Technical Mr. Ashok Kumar Lamba हैं।",
+    "BCC ki leadership team mein Managing Director Mr. Bhoop Singh, Executive Director Mr. Dheeraj Singh, CFO Vijay Kumar Sharma aur Director Technical Mr. Ashok Kumar Lamba hain."
+  );
+  if (/financial|finance|revenue|income|order book|credit|rating|net worth|financial strength/i.test(q)) return reply(
+    "Visit Financial strength for approximate public indicators, credit profile, operating trajectory and BCC's disclosed order-book context.",
+    "Financial strength page पर approximate public indicators, credit profile, operating trajectory और BCC के disclosed order-book context देखें।",
+    "Financial strength page par approximate public indicators, credit profile, operating trajectory aur BCC ke disclosed order-book context dekhiye."
+  );
+  if (/about|company|vision|mission|history|bcc buildtech|bharat construction/i.test(q)) return reply(
+    "About BCC explains the company's execution-led story, mission, vision, public-sector discipline and focus on roads, highways and infrastructure.",
+    "About BCC में company की execution-led story, mission, vision, public-sector discipline और roads, highways व infrastructure focus के बारे में पढ़ें।",
+    "About BCC mein company ki execution-led story, mission, vision, public-sector discipline aur roads, highways aur infrastructure focus ke baare mein padhiye."
+  );
+  if (/career|careers|job|vacancy|resume|cv|apply|काम चाहिए|नौकरी/i.test(q)) return reply(
+    "Visit Careers to explore site engineering, planning & QS, plant, safety, finance and graduate roles, then submit your resume through the application form.",
+    "Careers page पर site engineering, planning & QS, plant, safety, finance और graduate roles देखें और application form से resume भेजें।",
+    "Careers page par site engineering, planning & QS, plant, safety, finance aur graduate roles dekhiye aur form se resume submit kijiye."
+  );
+  if (/csr|sustainability|environment|impact|media|blog/i.test(q)) return reply(
+    "Impact covers CSR, sustainability, QHSE and the media centre, including responsible construction, community initiatives and company updates.",
+    "Impact section में CSR, sustainability, QHSE और media centre शामिल हैं—responsible construction, community initiatives और company updates के लिए।",
+    "Impact section mein CSR, sustainability, QHSE aur media centre hain—responsible construction, community initiatives aur company updates ke liye."
+  );
+  if (/contact|enquire|enquiry|phone|email|call/i.test(q)) return reply(
+    `Use Enquire to send a project enquiry. You can also call ${brand.phone} or email ${brand.email}.`,
+    `Enquire page से project enquiry भेजें। आप ${brand.phone} पर call या ${brand.email} पर email भी कर सकते हैं।`,
+    `Enquire page se project enquiry bhejiye. ${brand.phone} par call ya ${brand.email} par email bhi kar sakte hain.`
+  );
+  if (/where|location|office|gurugram|address/i.test(q)) return reply(
+    `BCC's office is in ${brand.address}.`,
+    `BCC का office ${brand.address} पर है।`,
+    `BCC ka office ${brand.address} par hai.`
+  );
+  return reply(
+    "I can help with Projects, EPC, HAM, Bridges & Structures, leadership, financial strength, mission and vision, careers, CSR, sustainability, media or enquiries. Try asking about one of these topics.",
+    "मैं Projects, EPC, HAM, Bridges & Structures, leadership, financial strength, mission और vision, careers, CSR, sustainability, media या enquiries में मदद कर सकता हूँ। इनमें से किसी topic के बारे में पूछें।",
+    "Main Projects, EPC, HAM, Bridges & Structures, leadership, financial strength, mission-vision, careers, CSR, sustainability, media ya enquiries par help kar sakta hoon. Kisi bhi topic ke baare mein poochhiye."
+  );
 }
 
 function FloatingAssist() {
   const [chatOpen, setChatOpen] = useState(false);
-  const [messages, setMessages] = useState([{from: "bot", text: "Hello. How can I help you explore BCC Buildtech?"}]);
+  const [messages, setMessages] = useState<ChatMessage[]>([{from: "bot", text: "Hello! How can I help you explore BCC Buildtech? / नमस्ते! BCC के बारे में पूछिए।"}]);
   const [draft, setDraft] = useState("");
   const [listening, setListening] = useState(false);
   const [showTop, setShowTop] = useState(false);
@@ -574,7 +651,7 @@ function FloatingAssist() {
     const Recognition = speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition;
     if (!Recognition) {
       setChatOpen(true);
-      setMessages(current => [...current, {from: "bot", text: "Voice input is not supported in this browser. You can still use the chat assistant here."}]);
+      setMessages(current => [...current, {from: "bot", text: "Voice input is not supported in this browser. You can still type in English, Hindi or Hinglish. / इस browser में voice input उपलब्ध नहीं है।"}]);
       return;
     }
     const instance = new Recognition();
@@ -602,23 +679,26 @@ function FloatingAssist() {
     <>
       <AnimatePresence>
         {chatOpen && (
-          <motion.section initial={{opacity: 0, y: 18, scale: .96}} animate={{opacity: 1, y: 0, scale: 1}} exit={{opacity: 0, y: 18, scale: .96}} className="fixed bottom-22 right-3 z-70 flex w-[min(23rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-3xl border border-white/15 bg-ink/95 text-white shadow-[0_24px_70px_-24px_rgba(0,0,0,.7)] backdrop-blur-xl sm:bottom-24 sm:right-5">
+          <motion.section role="dialog" aria-label="BCC assistant chat" initial={{opacity: 0, y: 18, scale: .96}} animate={{opacity: 1, y: 0, scale: 1}} exit={{opacity: 0, y: 18, scale: .96}} className="fixed bottom-[calc(5rem+env(safe-area-inset-bottom))] right-2 z-70 flex max-h-[min(72svh,38rem)] w-[min(25rem,calc(100vw-1rem))] flex-col overflow-hidden rounded-[24px] border border-white/15 bg-[#0b1719]/[.98] text-white shadow-[0_24px_70px_-24px_rgba(0,0,0,.7)] backdrop-blur-xl sm:bottom-[calc(6rem+env(safe-area-inset-bottom))] sm:right-5">
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-3.5">
-              <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-(image:--brand-grad)"><Bot className="h-4 w-4" /></span><div><p className="text-sm font-semibold">BCC assistant</p><p className="text-[11px] text-white/50">Quick answers about BCC</p></div></div>
+              <div className="flex min-w-0 items-center gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full border border-teal-3/50 bg-white"><img src="/bcc/logo.png" alt="BCC Buildtech logo" className="h-full w-full object-contain p-1" /></span><div className="min-w-0"><p className="truncate text-sm font-semibold">BCC assistant</p><p className="truncate text-[11px] text-teal-3/80">Online · English / हिन्दी / Hinglish</p></div></div>
               <button type="button" onClick={() => setChatOpen(false)} aria-label="Close assistant" className="grid h-8 w-8 place-items-center rounded-full text-white/60 hover:bg-white/10 hover:text-white"><X className="h-4 w-4" /></button>
             </div>
-            <div className="scrollbar-none flex max-h-65 flex-col gap-2 overflow-y-auto px-4 py-3" aria-live="polite">
-              {messages.map((message, i) => <p key={`${message.from}-${i}`} className={cx("max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13px] leading-5", message.from === "user" ? "self-end bg-teal text-white" : "self-start bg-white/10 text-white/80")}>{message.text}</p>)}
+            <div className="scrollbar-none flex min-h-36 flex-1 flex-col gap-2 overflow-y-auto bg-[radial-gradient(circle_at_top,rgba(92,196,191,.08),transparent_48%)] px-3 py-3 sm:px-4" aria-live="polite">
+              {messages.map((message, i) => <div key={`${message.from}-${i}`} className={cx("flex max-w-[92%] flex-col gap-1", message.from === "user" ? "self-end items-end" : "self-start items-start")}><p className={cx("rounded-[18px] px-3.5 py-2.5 text-[13px] leading-5 shadow-sm", message.from === "user" ? "rounded-br-md bg-[#128c7e] text-white" : "rounded-bl-md bg-[#263336] text-white/90")}>{message.text}</p><span className="px-1 text-[9px] text-white/35">{message.from === "user" ? "You" : "BCC"}</span></div>)}
             </div>
-            <form onSubmit={event => {event.preventDefault(); submit();}} className="flex gap-2 border-t border-white/10 p-3">
-              <input value={draft} onChange={event => setDraft(event.target.value)} aria-label="Ask BCC assistant" placeholder="Ask about projects..." className="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/8 px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/35 focus:border-teal-3" />
-              <button type="submit" aria-label="Send message" className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-teal text-white hover:bg-teal-2"><Send className="h-4 w-4" /></button>
+            <div className="flex gap-2 overflow-x-auto border-t border-white/10 px-3 pb-2 pt-2 scrollbar-none sm:px-4">
+              {["Projects", "EPC / HAM", "Careers", "Contact"].map(prompt => <button key={prompt} type="button" onClick={() => submit(prompt)} className="shrink-0 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[11px] text-white/70 transition-colors hover:border-teal-3 hover:text-white">{prompt}</button>)}
+            </div>
+            <form onSubmit={event => {event.preventDefault(); submit();}} className="flex items-end gap-2 border-t border-white/10 p-2.5 sm:p-3">
+              <input value={draft} onChange={event => setDraft(event.target.value)} aria-label="Ask BCC assistant" placeholder="Type your message... / अपना सवाल लिखें" className="min-h-11 min-w-0 flex-1 rounded-[18px] border border-white/10 bg-white/8 px-3.5 py-2.5 text-sm text-white outline-none placeholder:text-white/35 focus:border-teal-3" />
+              <button type="submit" aria-label="Send message" className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#128c7e] text-white hover:bg-teal-2"><Send className="h-4 w-4" /></button>
             </form>
           </motion.section>
         )}
       </AnimatePresence>
-      <div className="fixed bottom-4 right-3 z-70 flex items-center gap-2 sm:bottom-5 sm:right-5">
-        <button type="button" onClick={() => setChatOpen(open => !open)} aria-label={chatOpen ? "Close chat assistant" : "Open chat assistant"} className="grid h-12 w-12 place-items-center rounded-full border border-white/20 bg-ink/90 text-white shadow-[0_14px_35px_-12px_rgba(0,0,0,.8)] backdrop-blur-lg transition-transform hover:-translate-y-1"><MessageCircle className="h-5 w-5" /></button>
+      <div className="fixed bottom-[calc(.75rem+env(safe-area-inset-bottom))] right-2 z-70 flex items-center gap-2 sm:bottom-[calc(1.25rem+env(safe-area-inset-bottom))] sm:right-5">
+        <button type="button" onClick={() => setChatOpen(open => !open)} aria-label={chatOpen ? "Close chat assistant" : "Open chat assistant"} className="grid h-12 w-12 place-items-center overflow-hidden rounded-full border border-white/25 bg-white shadow-[0_14px_35px_-12px_rgba(0,0,0,.8)] backdrop-blur-lg transition-transform hover:-translate-y-1"><img src="/bcc/logo.png" alt="Open BCC assistant" className="h-full w-full object-contain p-1.5" /></button>
         <button type="button" onClick={toggleVoice} aria-label={listening ? "Stop voice assistant" : "Start voice assistant"} className={cx("grid h-12 w-12 place-items-center rounded-full text-white shadow-[0_14px_35px_-12px_rgba(0,0,0,.8)] transition-transform hover:-translate-y-1", listening ? "bg-rose-600" : "bg-(image:--brand-grad)")}><Mic className="h-5 w-5" /></button>
         {listening && <span className="sr-only" aria-live="assertive">Listening</span>}
       </div>
