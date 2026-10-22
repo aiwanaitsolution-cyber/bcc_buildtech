@@ -19,7 +19,7 @@ export const machinery=[
 export const financials={fy23:90.50,fy24:190.93,fy25:265.97,h1fy26:165,orderBook:867,netWorth:59.67,ebitda25:55.12,pat25:33.71,ebitdaMargin25:20.72,patMargin25:12.63,gearing25:0.42,interestCoverage25:11.96};
 export const rating={longTerm:"IVR BBB+ / Stable",shortTerm:"IVR A2",facilities:"₹110 Cr",date:"31 December 2025"};
 export const leadership=[
-{name:"Mr. Bhoop Singh",role:"Managing Director",experience:"20+ years",qualification:"Civil engineering background",image:"/bcc/leader-bhoop-singh.png"},
+{name:"Mr. Bhoop Singh",role:"Managing Director",experience:"20+ years",qualification:"Civil engineering background",image:"/bcc/leader-bhoop-singh.jpeg"},
 {name:"Mr. Dheeraj Singh",role:"Executive Director",experience:"Leadership team",qualification:"Infrastructure delivery",image:"/bcc/leader-dheeraj-singh.png"},
 {name:"Vijay Kumar Sharma",role:"Chief Financial Officer",experience:"Leadership team",qualification:"Finance & governance",image:"/bcc/leader-vijay-sharma.png"},
 {name:"Mr. Ashok Kumar Lamba",role:"Director Technical",experience:"Leadership team",qualification:"Technical execution",image:"/bcc/leader-ashok-lamba.png"}];
