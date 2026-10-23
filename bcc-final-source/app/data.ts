@@ -22,7 +22,7 @@ export const leadership=[
 {name:"Mr. Bhoop Singh",role:"Managing Director",experience:"20+ years",qualification:"Civil engineering background",image:"/bcc/leader-bhoop-singh.jpeg"},
 {name:"Mr. Dheeraj Singh",role:"Executive Director",experience:"Leadership team",qualification:"Infrastructure delivery",image:"/bcc/leader-dheeraj-singh.png"},
 {name:"Vijay Kumar Sharma",role:"Chief Financial Officer",experience:"Leadership team",qualification:"Finance & governance",image:"/bcc/leader-vijay-sharma.png"},
-{name:"Mr. Ashok Kumar Lamba",role:"Director Technical",experience:"Leadership team",qualification:"Technical execution",image:"/bcc/leader-ashok-lamba-v3.png"}];
+{name:"Mr. Ashok Kumar Lamba",role:"Director Technical",experience:"Leadership team",qualification:"Technical execution",image:"/bcc/leader-ashok-lamba-v4.jpeg"}];
 /* Curated photography. Unsplash IDs verified; swap for BCC site photography when available. */
 const U=(id:string,w=2400)=>`https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=82`;
 export const IMG={
