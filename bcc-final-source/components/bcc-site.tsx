@@ -745,7 +745,7 @@ export function Shell({children, backdrop}: {children: React.ReactNode; backdrop
    Sections
 ------------------------------------------------------------------- */
 function ScaleStrip() {
-  const stats = [["₹900+ Cr", "Order book"], ["200+", "Fleet size assets based"], ["40+", "Completed projects"], ["20+", "Years of delivery"]];
+  const stats = [["₹900+ Cr", "Order book"], ["200+", "Asset base"], ["40+", "Completed projects"], ["20+", "Years of delivery"]];
   return (
     <motion.section id="scale" initial={{opacity: 0, y: 30}} whileInView={{opacity: 1, y: 0}} viewport={{once: true}} transition={{duration: 0.9, ease: EASE}} className="float-panel panel-glass on-dark">
       <div className="wrap">
