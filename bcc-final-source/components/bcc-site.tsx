@@ -7,6 +7,7 @@ import {IMG, brand, financials, leadership, machinery, navigation, pageMeta, pro
 
 const cx = (...s: (string | false | undefined | null)[]) => s.filter(Boolean).join(" ");
 const EASE = [0.16, 1, 0.3, 1] as const;
+const cleanApprox = (value: string) => value.replace(/approx(?:imate)?\.?\s*/gi, "");
 
 /* ------------------------------------------------------------------
    Fixed backdrop — the whole site floats over this layer
@@ -570,9 +571,9 @@ function answerAssistant(question: string) {
     "BCC ki execution discipline NHAI, NHIDCL, MoRTH aur PWD jaise public-sector infrastructure environments ki expectations ke aligned hai."
   );
   if (/machinery|fleet|equipment|plant|capabilit|capacity/i.test(q)) return reply(
-    "BCC has an approximate 200+ fleet and equipment base covering earthwork, asphalt, compaction, pavement, concrete, logistics and supporting plant.",
-    "BCC के पास approximate 200+ fleet और equipment base है, जिसमें earthwork, asphalt, compaction, pavement, concrete, logistics और supporting plant शामिल हैं।",
-    "BCC ke paas approximate 200+ fleet aur equipment base hai—earthwork, asphalt, compaction, pavement, concrete, logistics aur supporting plant ke liye."
+    "BCC has a 200+ fleet and equipment base covering earthwork, asphalt, compaction, pavement, concrete, logistics and supporting plant.",
+    "BCC के पास 200+ fleet और equipment base है, जिसमें earthwork, asphalt, compaction, pavement, concrete, logistics और supporting plant शामिल हैं।",
+    "BCC ke paas 200+ fleet aur equipment base hai—earthwork, asphalt, compaction, pavement, concrete, logistics aur supporting plant ke liye."
   );
   if (/leadership|leader|director|management|bhoop|dheeraj|vijay|ashok/i.test(q)) return reply(
     "BCC's leadership team includes Managing Director Mr. Bhoop Singh, Executive Director Mr. Dheeraj Singh, CFO Vijay Kumar Sharma and Director Technical Mr. Ashok Kumar Lamba.",
@@ -580,9 +581,9 @@ function answerAssistant(question: string) {
     "BCC ki leadership team mein Managing Director Mr. Bhoop Singh, Executive Director Mr. Dheeraj Singh, CFO Vijay Kumar Sharma aur Director Technical Mr. Ashok Kumar Lamba hain."
   );
   if (/financial|finance|revenue|income|order book|credit|rating|net worth|financial strength/i.test(q)) return reply(
-    "Visit Financial strength for approximate public indicators, credit profile, operating trajectory and BCC's disclosed order-book context.",
-    "Financial strength page पर approximate public indicators, credit profile, operating trajectory और BCC के disclosed order-book context देखें।",
-    "Financial strength page par approximate public indicators, credit profile, operating trajectory aur BCC ke disclosed order-book context dekhiye."
+    "Visit Financial strength for public indicators, credit profile, operating trajectory and BCC's disclosed order-book context.",
+    "Financial strength page पर public indicators, credit profile, operating trajectory और BCC के disclosed order-book context देखें।",
+    "Financial strength page par public indicators, credit profile, operating trajectory aur BCC ke disclosed order-book context dekhiye."
   );
   if (/about|company|vision|mission|history|bcc buildtech|bharat construction/i.test(q)) return reply(
     "About BCC explains the company's execution-led story, mission, vision, public-sector discipline and focus on roads, highways and infrastructure.",
@@ -744,7 +745,7 @@ export function Shell({children, backdrop}: {children: React.ReactNode; backdrop
    Sections
 ------------------------------------------------------------------- */
 function ScaleStrip() {
-  const stats = [["Approx. ₹900+ Cr", "Order book"], ["200+", "Fleet size"], ["Approx. 40", "Completed projects"], ["20+", "Years of delivery"]];
+  const stats = [["₹900+ Cr", "Order book"], ["200+", "Fleet size assets based"], ["40+", "Completed projects"], ["20+", "Years of delivery"]];
   return (
     <motion.section id="scale" initial={{opacity: 0, y: 30}} whileInView={{opacity: 1, y: 0}} viewport={{once: true}} transition={{duration: 0.9, ease: EASE}} className="float-panel panel-glass on-dark">
       <div className="wrap">
@@ -759,7 +760,7 @@ function ScaleStrip() {
           ))}
         </div>
         </div>
-        <p className="px-5 py-3.5 text-[11px] text-white/45 sm:px-7">Approximate public-facing indicators for orientation; detailed disclosures remain in formal company materials.</p>
+        <p className="px-5 py-3.5 text-[11px] text-white/45 sm:px-7">Public-facing indicators for orientation; detailed disclosures remain in formal company materials.</p>
       </div>
     </motion.section>
   );
@@ -795,8 +796,8 @@ function Intro() {
 }
 
 function FinancialStrength() {
-  const figures: [string, string, string][] = [["FY23", "Approx. ₹90 Cr", "Starting base"], ["FY24", "Approx. ₹190 Cr", "Acceleration"], ["FY25", "Approx. ₹265 Cr", "Current scale"]];
-  const signals: [string, string, string][] = [["Growth trajectory", "Approx. 70%", "Operating-income growth across the latest reported period"], ["Profitability", "Approx. 20%", "Indicative EBITDA margin"], ["Balance sheet", "Below 1x", "Measured overall gearing"], ["Debt protection", "Approx. 12x", "Indicative interest cover"]];
+  const figures: [string, string, string][] = [["FY23", "₹90 Cr", "Starting base"], ["FY24", "₹190 Cr", "Acceleration"], ["FY25", "₹265 Cr", "Current scale"]];
+  const signals: [string, string, string][] = [["Growth trajectory", "70%", "Operating-income growth across the latest reported period"], ["Profitability", "20%", "Indicative EBITDA margin"], ["Balance sheet", "Below 1x", "Measured overall gearing"], ["Debt protection", "12x", "Indicative interest cover"]];
   return (
     <>
       <Panel tone="dark" pad={false}>
@@ -818,7 +819,7 @@ function FinancialStrength() {
             <Reveal delay={0.12} className="rounded-[26px] border border-white/15 bg-ink/45 p-6 backdrop-blur-md sm:p-8">
               <p className="eyebrow on-dark">At a glance</p>
               <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10">
-                {[['Approx. ₹265 Cr', "FY25 operating income"], ['Approx. ₹60 Cr', "Net worth"], ['Approx. 20%', "EBITDA margin"], ['Approx. 12x', "Interest cover"]].map(([v, l]) => (
+                {[['₹265 Cr', "FY25 operating income"], ['₹60 Cr', "Net worth"], ['20%', "EBITDA margin"], ['12x', "Interest cover"]].map(([v, l]) => (
                   <div key={l} className="bg-ink/65 p-5"><b className="font-display text-2xl font-semibold text-white sm:text-3xl">{v}</b><span className="mt-2 block text-xs leading-5 text-white/55">{l}</span></div>
                 ))}
               </div>
@@ -860,7 +861,7 @@ function FinancialStrength() {
             <p className="mt-7 text-sm leading-6 text-white/50">Rated by Infomerics · {rating.date}</p>
           </Reveal>
           <Reveal delay={0.1} className="grid gap-4 sm:grid-cols-2">
-            {[["Order book", "Approx. ₹900+ Cr", "Visible opportunity across active and awarded work"], ["Rated facilities", "Approx. ₹110 Cr", "Banking relationships supporting execution"], ["Operating model", "EPC + HAM", "Integrated delivery with long-horizon capability"], ["Control system", "Measured", "Planning, QA/QC and safety discipline on site"]].map(([t, v, c]) => <article key={t} className="card-dark p-7"><span className="text-[11px] font-bold uppercase tracking-[.16em] text-teal-3">{t}</span><b className="mt-8 block font-display text-3xl font-semibold text-white">{v}</b><p className="mt-3 text-sm leading-6 text-white/55">{c}</p></article>)}
+            {[["Order book", "Approx. ₹900+ Cr", "Visible opportunity across active and awarded work"], ["Rated facilities", "Approx. ₹110 Cr", "Banking relationships supporting execution"], ["Operating model", "EPC + HAM", "Integrated delivery with long-horizon capability"], ["Control system", "Measured", "Planning, QA/QC and safety discipline on site"]].map(([t, v, c]) => <article key={t} className="card-dark p-7"><span className="text-[11px] font-bold uppercase tracking-[.16em] text-teal-3">{t}</span><b className="mt-8 block font-display text-3xl font-semibold text-white">{cleanApprox(v)}</b><p className="mt-3 text-sm leading-6 text-white/55">{c}</p></article>)}
           </Reveal>
         </div>
       </Panel>
@@ -976,7 +977,7 @@ function PresenceMap() {
             <h3 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{p.title}</h3>
             <p className="mt-4 leading-7 text-white/60">{p.summary}</p>
             <div className="mt-7 grid grid-cols-2 gap-2">
-              {[["Employer", p.authority], ["Model", p.model], ["Value", p.value], ["Status", p.status]].map(([l, v]) => (
+          {[["Employer", p.authority], ["Model", p.model], ["Value", cleanApprox(p.value)], ["Status", p.status]].map(([l, v]) => (
                 <div key={l} className="rounded-2xl border border-white/10 bg-white/4 p-4"><small className="text-[11px] font-semibold uppercase tracking-[.12em] text-white/40">{l}</small><b className="mt-1.5 block">{v}</b></div>
               ))}
             </div>
@@ -1007,12 +1008,12 @@ function ProjectCard({p}: {p: (typeof projects)[number]}) {
           <span className="chip bg-ink/60 text-white backdrop-blur-md">{p.state}</span>
           <StatusChip status={p.status} />
         </div>
-        <b className="absolute bottom-4 left-5 font-display text-2xl font-semibold text-white">Approx. project scope</b>
+        <b className="absolute bottom-4 left-5 font-display text-2xl font-semibold text-white">Project scope</b>
       </div>
       <div className="flex flex-1 flex-col p-6">
         <h3 className="font-display text-xl font-semibold leading-snug tracking-tight">{p.title}</h3>
         <dl className="mt-5 grid grid-cols-3 gap-3 text-sm">
-          {[["Employer", p.authority], ["Model", p.model], ["Approx. scope", p.length]].map(([l, v]) => (
+          {[["Employer", p.authority], ["Model", p.model], ["Scope", p.length]].map(([l, v]) => (
             <div key={l}><dt className="text-[10.5px] font-semibold uppercase tracking-[.12em] text-steel">{l}</dt><dd className="mt-1 font-semibold text-ink">{v}</dd></div>
           ))}
         </dl>
@@ -1075,11 +1076,29 @@ function ProjectExplorer() {
 }
 
 function Leadership() {
+  const [md, ...team] = leadership;
   return (
     <Panel tone="white">
       <SectionHead eyebrow="Management strength" title="Leadership built on execution experience." copy="A focused four-person leadership team keeps delivery, finance and technical accountability close to the work." />
-      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {leadership.map((x, i) => (
+      <Reveal className="card mt-14 overflow-hidden p-3 sm:p-4">
+        <div className="grid gap-0 overflow-hidden rounded-[24px] bg-ink lg:grid-cols-[1.05fr_.95fr]">
+          <div className="relative aspect-[4/5] overflow-hidden bg-ink sm:aspect-[5/6] lg:aspect-auto lg:min-h-135">
+            <img src={md.image} alt={`${md.name}, ${md.role}`} loading="lazy" className="absolute inset-0 h-full w-full object-cover object-top transition duration-700 hover:scale-105" />
+          </div>
+          <div className="flex flex-col justify-center bg-ink p-7 text-white sm:p-10 lg:p-12">
+            <p className="eyebrow on-dark">Managing Director</p>
+            <h3 className="mt-5 max-w-lg font-display text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">{md.name}</h3>
+            <p className="mt-2 text-base font-semibold text-teal-3">{md.role}</p>
+            <h4 className="mt-8 max-w-lg font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">Civil engineering leadership with a delivery-first view.</h4>
+            <p className="mt-5 max-w-xl text-[15px] leading-7 text-white/65">Mr. Bhoop Singh is a professional civil engineer and the strategic force behind BCC Buildtech’s highway and structures platform. His approach brings innovation, execution discipline, safety, sustainability and client satisfaction into one accountable way of building.</p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+              {["Highway & structure expertise", "Strategic execution leadership", "Quality and safety culture", "Community-focused infrastructure"].map((point, i) => <div key={point} className="rounded-2xl border border-white/10 bg-white/5 p-4"><span className="font-display text-sm font-semibold text-teal-3">0{i + 1}</span><p className="mt-3 text-sm leading-5 text-white/75">{point}</p></div>)}
+            </div>
+          </div>
+        </div>
+      </Reveal>
+      <div className="mt-6 grid gap-5 sm:grid-cols-3">
+        {team.map((x, i) => (
           <Reveal key={x.name} delay={i * 0.06}>
             <article className="card group overflow-hidden p-3">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[22px] bg-ink">
@@ -1090,9 +1109,7 @@ function Leadership() {
                   <p className="mt-1 text-sm font-semibold text-teal-3">{x.role}</p>
                 </div>
               </div>
-              <div className="px-2 pb-2 pt-4">
-                <p className="text-sm leading-6 text-steel">{x.qualification}</p>
-              </div>
+              <div className="px-2 pb-2 pt-4"><p className="text-sm leading-6 text-steel">{x.qualification}</p></div>
             </article>
           </Reveal>
         ))}
@@ -1101,7 +1118,7 @@ function Leadership() {
   );
 }
 
-function approximateQuantity(qty: number) {
+function quantityLabel(qty: number) {
   if (qty >= 40) return "40+";
   if (qty >= 10) return "10+";
   return "Several";
@@ -1115,7 +1132,7 @@ function MachineryExplorer() {
   const shown = all || cat !== "All" ? filtered : filtered.slice(0, 8);
   return (
     <Panel tone="dark" id="machinery">
-      <SectionHead eyebrow="Plant & machinery" title="Approx. 200+ fleet units." copy="A broad equipment base spanning asphalt, earthwork, compaction, pavement, materials, concrete, logistics and supporting plant." />
+      <SectionHead eyebrow="Plant & machinery" title="200+ fleet units." copy="A broad equipment base spanning asphalt, earthwork, compaction, pavement, materials, concrete, logistics and supporting plant." />
       <Reveal className="mt-12 grid overflow-hidden rounded-[28px] border border-white/10 bg-white/3 lg:grid-cols-[1.1fr_.9fr]">
         <div className="relative min-h-64 overflow-hidden">
           <motion.img src="/bcc/machinery-plant-hd.jpg" alt="BCC machinery and concrete plant" loading="lazy" initial={{scale: 1.3}} whileInView={{scale: 1}} viewport={{once: true}} transition={{duration: 1.8, ease: EASE}} className="absolute inset-0 h-full w-full object-cover" />
@@ -1124,7 +1141,7 @@ function MachineryExplorer() {
         <div className="p-7 sm:p-10 lg:p-12">
           <p className="eyebrow">Equipment base</p>
           <b className="block font-display text-7xl font-semibold tracking-tight"><span className="grad-text-light"><CountUp value="200+" /></span></b>
-          <p className="mt-3 text-white/60">approximate machines and equipment units supporting delivery</p>
+          <p className="mt-3 text-white/60">machines and equipment units supporting delivery</p>
           <div className="mt-8 grid grid-cols-2 gap-2">
             {[["40+", "Excavators"], ["40+", "Dumpers"], ["Several", "Motor graders"], ["Several", "RMC plants"]].map(([n, l]) => (
               <div key={l} className="rounded-2xl border border-white/10 bg-white/4 p-4"><b className="font-display text-2xl font-semibold text-teal-3">{n}</b><span className="mt-0.5 block text-sm text-white/60">{l}</span></div>
@@ -1143,7 +1160,7 @@ function MachineryExplorer() {
             <motion.article layout key={name} initial={{opacity: 0, y: 12}} animate={{opacity: 1, y: 0}} exit={{opacity: 0}} transition={{duration: 0.4, ease: EASE}} className="card-dark flex flex-col p-6">
               <div className="flex items-start justify-between">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/6 text-teal-3"><Factory className="h-5 w-5" /></span>
-                <b className="font-display text-4xl font-semibold tracking-tight text-white">{approximateQuantity(qty)}</b>
+                <b className="font-display text-4xl font-semibold tracking-tight text-white">{quantityLabel(qty)}</b>
               </div>
               <h3 className="mt-8 font-display text-lg font-semibold leading-snug">{name}</h3>
               <p className="mt-1.5 text-sm leading-6 text-white/50">{make}</p>
@@ -1345,7 +1362,7 @@ function CorridorCard({p, i, className}: {p: (typeof projects)[number]; i: numbe
         <span className="chip panel-glass text-white">{p.state} · {p.model}</span>
         <h3 className="mt-4 font-display text-2xl font-semibold leading-tight tracking-tight text-white sm:text-[1.7rem]">{p.title}</h3>
         <div className="mt-5 flex items-end justify-between gap-4 border-t border-white/15 pt-5">
-          <div><small className="text-[10.5px] font-bold uppercase tracking-[.16em] text-white/50">Approx. project scope</small><b className="mt-1 block font-display text-2xl font-semibold"><span className="grad-text-light">Approx. scope</span></b></div>
+          <div><small className="text-[10.5px] font-bold uppercase tracking-[.16em] text-white/50">Project scope</small><b className="mt-1 block font-display text-2xl font-semibold"><span className="grad-text-light">Scope</span></b></div>
           <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-ink transition-all duration-500 group-hover:-rotate-45 group-hover:bg-teal-3"><ArrowRight className="h-5 w-5" /></span>
         </div>
       </div>
@@ -1538,7 +1555,7 @@ function ExploreGrid() {
   const items = [
     {title: "Businesses", copy: "Highways, bridges and structures delivered under EPC, with HAM readiness.", href: "/businesses", image: IMG.bridge},
     {title: "Projects", copy: "Disclosed credentials across multiple states.", href: "/projects", image: IMG.mountainRoad},
-      {title: "Capabilities", copy: "Approx. 200+ fleet size and specialised site teams.", href: "/capabilities", image: IMG.paving},
+      {title: "Capabilities", copy: "200+ fleet size and specialised site teams.", href: "/capabilities", image: IMG.paving},
     {title: "Financial strength", copy: "Audited growth and an IVR BBB+ / Stable rating.", href: "/financials", image: IMG.tower},
     {title: "Leadership", copy: "Decades of execution experience at the top.", href: "/leadership", image: IMG.engineers},
   ];
@@ -1620,7 +1637,7 @@ function Timeline() {
 function CapabilityIntro() {
   const items: [typeof Users, string, string][] = [
     [Users, "Management", "Senior leaders with decades of experience across projects, technical, finance and plant."],
-    [Factory, "Machinery", "Approx. 200+ units, from hot-mix plants and sensor pavers to crushers and RMC plants."],
+    [Factory, "Machinery", "200+ units, from hot-mix plants and sensor pavers to crushers and RMC plants."],
     [HardHat, "Manpower", "A core team of key personnel supported by site engineers, supervisors and skilled crews."],
     [ShieldCheck, "Systems", "Planning, QA/QC and safety controls applied consistently from site to head office."],
   ];
@@ -1644,10 +1661,10 @@ function CapabilityIntro() {
 
 function RatingHighlights() {
   const items: [string, string, string][] = [
-    ["Sustained growth", "Approx. 70%", "Operating-income growth across the latest reported period"],
-    ["Healthy profitability", "Approx. 20%", "Indicative EBITDA margin"],
+    ["Sustained growth", "70%", "Operating-income growth across the latest reported period"],
+    ["Healthy profitability", "20%", "Indicative EBITDA margin"],
     ["Comfortable capital structure", "Below 1x", "Measured overall gearing"],
-    ["Debt protection", "Approx. 12x", "Indicative interest cover"],
+    ["Debt protection", "12x", "Indicative interest cover"],
   ];
   return (
     <Panel tone="dark">
@@ -1736,7 +1753,7 @@ function AutoStoryGallery({model, images}: {model: string; images: string[]}) {
 }
 
 export function HomePage() {
-  const home = {eyebrow: "20+ years of infrastructure execution", title: "Building roads. Connecting regions. Accelerating India.", copy: "BCC Buildtech Limited delivers highways, bridges and strategic road infrastructure, backed by an approximate ₹900+ Cr order book and EPC/HAM capability."};
+  const home = {eyebrow: "20+ years of infrastructure execution", title: "Building roads. Connecting regions. Accelerating India.", copy: "BCC Buildtech Limited delivers highways, bridges and strategic road infrastructure, backed by a ₹900+ Cr order book and EPC/HAM capability."};
   return (
     <Shell backdrop={{images: HOME_IMAGES}}>
       <main className="site-stack p-0!">
@@ -1798,7 +1815,7 @@ function pageContent(slug: string): React.ReactNode {
       </>;
     case "businesses":
       return <>
-        <SplitFeature id="roads" eyebrow="Roads & highways" title="Corridors built for decades of traffic." copy="From two-lane widening in the hills of the North-East to four-laning across Haryana, we deliver complete road packages: earthwork, pavement, drainage and road furniture." points={["Two-lane, paved-shoulder and four-lane widening", "DBM, BC and WMM pavement layers", "Hill-road construction in the North-East", "Drainage, retaining walls and road furniture"]} image={IMG.interchange} cta={["View road credentials", "/projects"]} stat={["Approx. 10", "Disclosed projects"]} />
+        <SplitFeature id="roads" eyebrow="Roads & highways" title="Corridors built for decades of traffic." copy="From two-lane widening in the hills of the North-East to four-laning across Haryana, we deliver complete road packages: earthwork, pavement, drainage and road furniture." points={["Two-lane, paved-shoulder and four-lane widening", "DBM, BC and WMM pavement layers", "Hill-road construction in the North-East", "Drainage, retaining walls and road furniture"]} image={IMG.interchange} cta={["View road credentials", "/projects"]} stat={["10+", "Disclosed projects"]} />
         <SplitFeature id="structures" tone="dark" reverse eyebrow="Bridges & structures" title="Structures that carry the network." copy="Rail over-bridges, retaining structures and concrete works backed by in-house batching, pumping and placing capacity." points={["ROB/LHS in lieu of rail level crossings", "RMC batching and concrete pumping", "Retaining walls and protection works", "Buildings and structures for public clients"]} image={IMG.bridge} cta={["Explore capabilities", "/capabilities"]} />
         <ModelCompare />
         <FeatureGrid eyebrow="Integrated scope" title="Integrated from mobilisation to handover." items={[
@@ -1816,7 +1833,7 @@ function pageContent(slug: string): React.ReactNode {
         <ModelCompare />
         <AutoStoryGallery model="EPC" images={[IMG.earthworks, IMG.siteCrew, IMG.paving]} />
         <ProcessSteps eyebrow="How EPC works at BCC" title="Five stages. One accountable team." steps={EPC_STEPS} />
-        <SplitFeature tone="dark" eyebrow="On the ground" title="Owned from award to handover." copy="One team owns engineering coordination, procurement, construction and quality, so employers get a single point of accountability and a predictable programme." points={["Single-point accountability", "In-house plant and fleet", "Layer-by-layer QA/QC", "Milestone-based reporting"]} image={IMG.siteCrew} stat={["200+", "Approx. fleet units"]} />
+        <SplitFeature tone="dark" eyebrow="On the ground" title="Owned from award to handover." copy="One team owns engineering coordination, procurement, construction and quality, so employers get a single point of accountability and a predictable programme." points={["Single-point accountability", "In-house plant and fleet", "Layer-by-layer QA/QC", "Milestone-based reporting"]} image={IMG.siteCrew} stat={["200+", "Fleet units"]} />
         <ContinueExploring slugs={["ham", "capabilities", "projects"]} />
       </>;
     case "ham":
@@ -1824,7 +1841,7 @@ function pageContent(slug: string): React.ReactNode {
         <ModelCompare initial="HAM" />
         <AutoStoryGallery model="HAM" images={[IMG.highway, IMG.siteCrew, IMG.interchange]} />
         <ProcessSteps eyebrow="HAM lifecycle" title="Delivery that lasts the whole concession." steps={HAM_STEPS} />
-        <SplitFeature tone="dark" reverse eyebrow="HAM credential" title="A live HAM programme in Madhya Pradesh." copy="Narmadapuram–Timarni Road, our ongoing HAM package for MPRDC: upgrading an intermediate-lane road to two lanes with paved shoulders." image={IMG.highway} stat={["Approx. ₹380 Cr", "Contract value"]} cta={["View credential", "/projects/narmadapuram-timarni"]} />
+        <SplitFeature tone="dark" reverse eyebrow="HAM credential" title="A live HAM programme in Madhya Pradesh." copy="Narmadapuram–Timarni Road, our ongoing HAM package for MPRDC: upgrading an intermediate-lane road to two lanes with paved shoulders." image={IMG.highway} stat={["₹380 Cr", "Contract value"]} cta={["View credential", "/projects/narmadapuram-timarni"]} />
         <ContinueExploring slugs={["epc", "financials", "projects"]} />
       </>;
     case "projects":
@@ -1887,7 +1904,7 @@ function pageContent(slug: string): React.ReactNode {
     default: // about
       return <>
         <ScaleStrip />
-        <SplitFeature eyebrow="Our story" title="From Bharat Construction Company to BCC Buildtech." copy="What began in 2003 as Bharat Construction Company has grown into an execution-led roads and infrastructure enterprise serving MoRTH, NHAI, NHIDCL, PWD and other government entities, with credentials across states and an approximate ₹900+ Cr order book." points={["20+ years of delivery", "BCC Buildtech Limited since 2025", "Credentials across states", "EPC delivery with HAM readiness"]} image={IMG.siteCrew} stat={["20+", "Years of delivery"]} />
+        <SplitFeature eyebrow="Our story" title="From Bharat Construction Company to BCC Buildtech." copy="What began in 2003 as Bharat Construction Company has grown into an execution-led roads and infrastructure enterprise serving MoRTH, NHAI, NHIDCL, PWD and other government entities, with credentials across states and a ₹900+ Cr order book." points={["20+ years of delivery", "BCC Buildtech Limited since 2025", "Credentials across states", "EPC delivery with HAM readiness"]} image={IMG.siteCrew} stat={["20+", "Years of delivery"]} />
         <Panel tone="light">
           <SectionHead eyebrow="Milestones" title="Built around proof." copy="An execution-led company with public-sector experience, field capability and long-term ambition across EPC and HAM." />
           <Timeline />
@@ -1922,7 +1939,7 @@ export function ProjectDetail({id}: {id: string}) {
   const idx = Math.max(0, projects.findIndex(x => x.id === id));
   const p = projects[idx];
   const next = projects[(idx + 1) % projects.length];
-  const facts = [["Employer", p.authority], ["Model", p.model], ["State", p.state], ["Status", p.status], ["Project value", p.value], ["Length / scope", p.length]];
+  const facts = [["Employer", p.authority], ["Model", p.model], ["State", p.state], ["Status", p.status], ["Project value", cleanApprox(p.value)], ["Length / scope", cleanApprox(p.length)]];
   const stages = ["Award", "Mobilisation", "Earthwork", "Structures", "Completion"];
   const reached = p.status === "Completed" ? stages.length : Math.max(1, Math.round((p.progress / 100) * stages.length));
   return (
